@@ -11,13 +11,9 @@ public class Module {
     public Module(String subject, int size){
         this.subject = subject;
         this.size = size;
-        genPerson();
+        this.person = new Person("Default","Default","Default");
+        this.record = new Seat[size*4];
         genSeats();
-    }
-    private void genPerson(){
-        this.person.setEmail("Default");
-        this.person.setFname("Default");
-        this.person.setSname("Default");
     }
     private void genSeats(){
         this.seats = new String[4][size];
@@ -47,6 +43,9 @@ public class Module {
     public int getSize(){return this.size;}
     public void getSeats(){
         for (int i = 0; i < seats.length; i++) {
+                if (i>0){
+                    System.out.println("\n");
+                }
             for (int j = 0; j < seats[i].length; j++) {
                 System.out.print(seats[i][j] + " , ");
             }
@@ -55,7 +54,7 @@ public class Module {
     public Person getPerson(){return this.person;}
 
     public void buySeat(int row, int col){
-        if(seats[row][col].equals("X")){System.out.println("org.example.Seat has been bought");}
+        if(seats[row][col].equals("X")){System.out.println("Seat has been booked already");}
         else{
             buy(row,col);
         }
@@ -70,19 +69,20 @@ public class Module {
         switch (row){
             case 0:
                 Class = "C1";
+                break;
             case 1:
                 Class = "C2";
+                break;
             case 2:
                 Class = "C3";
+                break;
             case 3:
                 Class = "C4";
+                break;
         }
         for (int x=0;x<4*size;x++){
             if (record[x] == null){
-                record[x].setCol(col);
-                record[x].setRow(row);
-                record[x].setClasss(Class);
-                record[x].setPerson(this.person);
+                record[x] = new Seat(row,col,Class,this.person);
                 x = 1000;
             }
         }
@@ -100,10 +100,14 @@ public class Module {
         this.person.setEmail(email);
     }
     public void cancelSeat(int row, int col){
-        setSeats(row, col, "C" + row);
-        System.out.println("You have cancelled this module.");
-        cancel(row,col);
-        getSeats();
+        if (seats[row][col].contains("C")){
+            System.out.println("Seat is available, can't be cancelled");
+        }
+        else{
+            setSeats(row, col, "C" + (row+1));
+            System.out.println("You have cancelled this module.");
+            cancel(row,col);
+        }
     }
     private void cancel(int row, int col){
         for (int x = 0;x<4*size;x++){
@@ -133,7 +137,7 @@ public class Module {
     }
     public void seatsLeft(){
         int total = 0;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             for (int j = 0; j < this.size; j++) {
                 if (this.seats[i][j].contains(("C"))) {
                     total++;
@@ -144,7 +148,7 @@ public class Module {
     }
     public void seatInfo(int row, int col){
         if (this.seats[row][col].contains("C")){
-            System.out.println("org.example.Seat is available at " + row + " " + col);
+            System.out.println("Seat is available at " + row + " " + col);
         }
         else{
             for (int x =0;x<record.length-1;x++){
