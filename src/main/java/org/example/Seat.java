@@ -1,3 +1,5 @@
+package org.example;
+
 public class Seat {
     private int row;
     private int col;
@@ -33,7 +35,7 @@ public class Seat {
     }
     public void printTicket(){
         System.out.println("Row is: " + this.row);
-        System.out.println("Seat is: " + this.col);
+        System.out.println("org.example.Seat is: " + this.col);
         System.out.println("Class is: " + this.classs);
         person.printPerson();
     }

@@ -1,3 +1,5 @@
+package org.example;
+
 import java.util.Scanner;
 
 public class Module {
@@ -53,7 +55,7 @@ public class Module {
     public Person getPerson(){return this.person;}
 
     public void buySeat(int row, int col){
-        if(seats[row][col].equals("X")){System.out.println("Seat has been bought");}
+        if(seats[row][col].equals("X")){System.out.println("org.example.Seat has been bought");}
         else{
             buy(row,col);
         }
@@ -133,7 +135,7 @@ public class Module {
         int total = 0;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < this.size; j++) {
-                if (this.seats[i][j].equals("O")) {
+                if (this.seats[i][j].contains(("C"))) {
                     total++;
                 }
             }
@@ -142,7 +144,7 @@ public class Module {
     }
     public void seatInfo(int row, int col){
         if (this.seats[row][col].contains("C")){
-            System.out.println("Seat is available at " + row + " " + col);
+            System.out.println("org.example.Seat is available at " + row + " " + col);
         }
         else{
             for (int x =0;x<record.length-1;x++){

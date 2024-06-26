@@ -1,0 +1,499 @@
+Index: src/main/java/org/example/Module.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.example;\r\n\r\nimport java.util.Scanner;\r\n\r\npublic class Module {\r\n    private String subject;\r\n    private int size;\r\n    private String seats[][];\r\n    private Person person;\r\n    public Seat[] record;\r\n    public Module(String subject, int size){\r\n        this.subject = subject;\r\n        this.size = size;\r\n        genPerson();\r\n        genSeats();\r\n    }\r\n    private void genPerson(){\r\n        this.person.setEmail(\"Default\");\r\n        this.person.setFname(\"Default\");\r\n        this.person.setSname(\"Default\");\r\n    }\r\n    private void genSeats(){\r\n        this.seats = new String[4][size];\r\n        for(int i = 0; i < 3; i++){\r\n            for(int j = 0; j < size; j++){\r\n                switch (i){\r\n                    case 0:\r\n                        this.seats[0][j] = \"C1\";\r\n                    case 1:\r\n                        this.seats[1][j] = \"C2\";\r\n                    case 2:\r\n                        this.seats[2][j] = \"C3\";\r\n                    case 3:\r\n                        this.seats[3][j] = \"C4\";\r\n                }\r\n            }\r\n        }\r\n    }\r\n    public void setSubject( String subject ){this.subject = subject;}\r\n    public void setSeats(int row, int col, String val){this.seats[row][col] = val;}\r\n    public void setSize( int size ){this.size = size;}\r\n    public void setPerson(String firstname, String surname, String email){\r\n        person = new Person(firstname,surname,email);\r\n    }\r\n\r\n    public String getSubject(){return this.subject;}\r\n    public int getSize(){return this.size;}\r\n    public void getSeats(){\r\n        for (int i = 0; i < seats.length; i++) {\r\n            for (int j = 0; j < seats[i].length; j++) {\r\n                System.out.print(seats[i][j] + \" , \");\r\n            }\r\n        }\r\n    }\r\n    public Person getPerson(){return this.person;}\r\n\r\n    public void buySeat(int row, int col){\r\n        if(seats[row][col].equals(\"X\")){System.out.println(\"org.example.Seat has been bought\");}\r\n        else{\r\n            buy(row,col);\r\n        }\r\n    }\r\n    private void buy(int Row, int col){\r\n        this.seats[Row][col] = \"X\";\r\n        PersonInfo();\r\n        CreateRecord(Row,col);\r\n    }\r\n    private void CreateRecord(int row,int col){\r\n        String Class = \"\";\r\n        switch (row){\r\n            case 0:\r\n                Class = \"C1\";\r\n            case 1:\r\n                Class = \"C2\";\r\n            case 2:\r\n                Class = \"C3\";\r\n            case 3:\r\n                Class = \"C4\";\r\n        }\r\n        for (int x=0;x<4*size;x++){\r\n            if (record[x] == null){\r\n                record[x].setCol(col);\r\n                record[x].setRow(row);\r\n                record[x].setClasss(Class);\r\n                record[x].setPerson(this.person);\r\n                x = 1000;\r\n            }\r\n        }\r\n    }\r\n    private void PersonInfo(){\r\n        Scanner input = new Scanner(System.in);\r\n        System.out.println(\"Enter your first name: \");\r\n        String fname = input.next();\r\n        this.person.setFname(fname);\r\n        System.out.println(\"Enter your surname: \");\r\n        String sname = input.next();\r\n        this.person.setSname(sname);\r\n        System.out.println(\"Enter your email: \");\r\n        String email = input.next();\r\n        this.person.setEmail(email);\r\n    }\r\n    public void cancelSeat(int row, int col){\r\n        setSeats(row, col, \"C\" + row);\r\n        System.out.println(\"You have cancelled this module.\");\r\n        cancel(row,col);\r\n        getSeats();\r\n    }\r\n    private void cancel(int row, int col){\r\n        for (int x = 0;x<4*size;x++){\r\n            if (row==record[x].getRow()){\r\n                if (col == record[x].getCol()){\r\n                    for (int y = x;y<record.length-1;y++){\r\n                        record[y] = record[y+1];\r\n                        x = 52;\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n    public void findFirstSeat(){\r\n        for (int i = 0; i < 3; i++) {\r\n            for (int j = 0; j < this.size; j++) {\r\n                if (this.seats[i][j].contains(\"C\")) {\r\n                    System.out.println(\"First seat is available at \" + i + \" \" + j);\r\n                    i=4;\r\n                    break;\r\n                }\r\n            }\r\n        }\r\n    }\r\n    public void printSeats(){\r\n        getSeats();\r\n    }\r\n    public void seatsLeft(){\r\n        int total = 0;\r\n        for (int i = 0; i < 3; i++) {\r\n            for (int j = 0; j < this.size; j++) {\r\n                if (this.seats[i][j].contains((\"C\"))) {\r\n                    total++;\r\n                }\r\n            }\r\n        }\r\n        System.out.println(\"There are \" + total + \" seats left\");\r\n    }\r\n    public void seatInfo(int row, int col){\r\n        if (this.seats[row][col].contains(\"C\")){\r\n            System.out.println(\"org.example.Seat is available at \" + row + \" \" + col);\r\n        }\r\n        else{\r\n            for (int x =0;x<record.length-1;x++){\r\n                if (record[x].getRow()==row){\r\n                    if (record[x].getCol() == col){\r\n                        record[x].printTicket();\r\n                        x=1000;\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/example/Module.java b/src/main/java/org/example/Module.java
+--- a/src/main/java/org/example/Module.java	(revision a3538351e703e9ca5818aa84ac4480c41ab515ef)
++++ b/src/main/java/org/example/Module.java	(date 1719436880021)
+@@ -11,14 +11,10 @@
+     public Module(String subject, int size){
+         this.subject = subject;
+         this.size = size;
+-        genPerson();
++        this.person = new Person("Default","Default","Default");
++        this.record = new Seat[size*4];
+         genSeats();
+     }
+-    private void genPerson(){
+-        this.person.setEmail("Default");
+-        this.person.setFname("Default");
+-        this.person.setSname("Default");
+-    }
+     private void genSeats(){
+         this.seats = new String[4][size];
+         for(int i = 0; i < 3; i++){
+@@ -47,6 +43,9 @@
+     public int getSize(){return this.size;}
+     public void getSeats(){
+         for (int i = 0; i < seats.length; i++) {
++                if (i>0){
++                    System.out.println("\n");
++                }
+             for (int j = 0; j < seats[i].length; j++) {
+                 System.out.print(seats[i][j] + " , ");
+             }
+@@ -55,7 +54,7 @@
+     public Person getPerson(){return this.person;}
+ 
+     public void buySeat(int row, int col){
+-        if(seats[row][col].equals("X")){System.out.println("org.example.Seat has been bought");}
++        if(seats[row][col].equals("X")){System.out.println("Seat has been booked already");}
+         else{
+             buy(row,col);
+         }
+@@ -70,19 +69,20 @@
+         switch (row){
+             case 0:
+                 Class = "C1";
++                break;
+             case 1:
+                 Class = "C2";
++                break;
+             case 2:
+                 Class = "C3";
++                break;
+             case 3:
+                 Class = "C4";
++                break;
+         }
+         for (int x=0;x<4*size;x++){
+             if (record[x] == null){
+-                record[x].setCol(col);
+-                record[x].setRow(row);
+-                record[x].setClasss(Class);
+-                record[x].setPerson(this.person);
++                record[x] = new Seat(row,col,Class,this.person);
+                 x = 1000;
+             }
+         }
+@@ -100,10 +100,14 @@
+         this.person.setEmail(email);
+     }
+     public void cancelSeat(int row, int col){
+-        setSeats(row, col, "C" + row);
+-        System.out.println("You have cancelled this module.");
+-        cancel(row,col);
+-        getSeats();
++        if (seats[row][col].contains("C")){
++            System.out.println("Seat is available, can't be cancelled");
++        }
++        else{
++            setSeats(row, col, "C" + (row+1));
++            System.out.println("You have cancelled this module.");
++            cancel(row,col);
++        }
+     }
+     private void cancel(int row, int col){
+         for (int x = 0;x<4*size;x++){
+@@ -133,7 +137,7 @@
+     }
+     public void seatsLeft(){
+         int total = 0;
+-        for (int i = 0; i < 3; i++) {
++        for (int i = 0; i < 4; i++) {
+             for (int j = 0; j < this.size; j++) {
+                 if (this.seats[i][j].contains(("C"))) {
+                     total++;
+@@ -144,7 +148,7 @@
+     }
+     public void seatInfo(int row, int col){
+         if (this.seats[row][col].contains("C")){
+-            System.out.println("org.example.Seat is available at " + row + " " + col);
++            System.out.println("Seat is available at " + row + " " + col);
+         }
+         else{
+             for (int x =0;x<record.length-1;x++){
+Index: src/main/java/org/example/Person.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.example;\r\n\r\npublic class Person {\r\n    private String firstname;\r\n    private String surname;\r\n    private String email;\r\n    public Person(String firstname, String surname, String email){\r\n        this.firstname=firstname;\r\n        this.surname=surname;\r\n        this.email=email;\r\n    }\r\n    public void setFname(String firstname){\r\n        this.firstname=firstname;\r\n    }\r\n    public void setSname(String surname){\r\n        this.surname=surname;\r\n    }\r\n    public void setEmail(String email){\r\n        this.email=email;\r\n    }\r\n    public String getFname(){\r\n        return this.firstname;\r\n    }\r\n    public String getSname(){\r\n        return this.surname;\r\n    }\r\n    public String getEmail(){\r\n        return this.email;\r\n    }\r\n    public void printPerson(){\r\n        System.out.println(\"org.example.Person name: \" + this.firstname + \" \" + this.surname + \" email: \" + this.email);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/example/Person.java b/src/main/java/org/example/Person.java
+--- a/src/main/java/org/example/Person.java	(revision a3538351e703e9ca5818aa84ac4480c41ab515ef)
++++ b/src/main/java/org/example/Person.java	(date 1719435716892)
+@@ -28,6 +28,6 @@
+         return this.email;
+     }
+     public void printPerson(){
+-        System.out.println("org.example.Person name: " + this.firstname + " " + this.surname + " email: " + this.email);
++        System.out.println("Person name: " + this.firstname + " " + this.surname + " \nEmail: " + this.email);
+     }
+ }
+Index: src/main/java/org/example/Seat.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.example;\r\n\r\npublic class Seat {\r\n    private int row;\r\n    private int col;\r\n    private String classs;\r\n    private Person person;\r\n    private int c;\r\n    public Seat(int row, int col,String classs, Person person){\r\n        this.row=row;\r\n        this.col=col;\r\n        this.classs=classs;\r\n        this.person = person;\r\n    }\r\n    public void setRow(int row){\r\n        this.row=row;\r\n    }\r\n    public void setCol(int col){\r\n        this.col=col;\r\n    }\r\n    public void setClasss(String classs){this.classs=classs;}\r\n    public void setPerson(String firstname, String surname, String email){\r\n        person = new Person(firstname,surname,email);\r\n    }\r\n    public void setPerson(Person person){this.person=person;}\r\n    public int getRow(){\r\n        return this.row;\r\n    }\r\n    public int getCol(){\r\n        return this.col;\r\n    }\r\n    public String getClasss(){return this.classs;}\r\n    public Person getPerson(){\r\n        return this.person;\r\n    }\r\n    public void printTicket(){\r\n        System.out.println(\"Row is: \" + this.row);\r\n        System.out.println(\"org.example.Seat is: \" + this.col);\r\n        System.out.println(\"Class is: \" + this.classs);\r\n        person.printPerson();\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/example/Seat.java b/src/main/java/org/example/Seat.java
+--- a/src/main/java/org/example/Seat.java	(revision a3538351e703e9ca5818aa84ac4480c41ab515ef)
++++ b/src/main/java/org/example/Seat.java	(date 1719435716927)
+@@ -35,7 +35,7 @@
+     }
+     public void printTicket(){
+         System.out.println("Row is: " + this.row);
+-        System.out.println("org.example.Seat is: " + this.col);
++        System.out.println("Column is: " + this.col);
+         System.out.println("Class is: " + this.classs);
+         person.printPerson();
+     }
+Index: src/main/java/org/example/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.example;\r\n\r\nimport java.util.Scanner;\r\nimport java.util.InputMismatchException;\r\npublic class Main {\r\n    static Module serverWeb = new Module(\"ServerSideWeb\", 10);\r\n    static Module clientWeb = new Module(\"ClientSideWeb\", 5);\r\n    static Module mobile = new Module(\"MobileAppDev\", 10);\r\n    static Module operate = new Module(\"OperatingSystems\", 7);\r\n    static Module robots = new Module(\"Robotics\", 6);\r\n    static Module current = serverWeb;\r\n\r\n    public static void main(String[] args) {\r\n        Scanner input = new Scanner(System.in);\r\n        boolean loop = false;\r\n        while (!loop){\r\n            System.out.println(\"Please select which class you want to enrol in: \" +\r\n                    \"1 - Server side web development \" +\r\n                    \"2 - Client side web development\" +\r\n                    \"3 - Mobile App Development\" +\r\n                    \"4 - Operating Systems\" +\r\n                    \"5 - Robotic Principles\" +\r\n                    \"0 - Quit Application\");\r\n            try {\r\n                int menu = input.nextInt();\r\n                switch (menu) {\r\n                    case 1 -> current=serverWeb;\r\n                    case 2 -> current=clientWeb;\r\n                    case 3 -> current=mobile;\r\n                    case 4 -> current=operate;\r\n                    case 5 -> current=robots;\r\n                    case 0 -> {\r\n                        loop=true;\r\n                        System.out.println(\"Thank you for using the Plane Management application\");\r\n                    }\r\n                    default -> System.out.println(\"Please enter a valid menu option\");\r\n                }\r\n            } catch (InputMismatchException e) {\r\n                System.out.println(\"Enter an integer please\");\r\n                input.nextLine();\r\n            }\r\n            int x = 1;\r\n            while (x==1){\r\n                System.out.println(\"Would you like to: \" +\r\n                        \"A - Book a place\" +\r\n                        \"B - Cancel a place\" +\r\n                        \"C - Find the first available place\" +\r\n                        \"D - Find how many openings are left\" +\r\n                        \"E - Find the info for a seat\" +\r\n                        \"F - Return to the original menu\" +\r\n                        \"G - Quit Application\");\r\n                String choice = input.next();\r\n                int row = 0;\r\n                int col = 0;\r\n                switch (choice) {\r\n                    case \"A\":\r\n                        row = getRow();\r\n                        col = getCol();\r\n                        current.buySeat(row,col);\r\n                    case \"B\":\r\n                        row = getRow();\r\n                        col = getCol();\r\n                        current.cancelSeat(row,col);\r\n                    case \"C\":\r\n                        current.findFirstSeat();\r\n                    case \"D\":\r\n                        current.seatsLeft();\r\n                    case \"E\":\r\n                        row = getRow();\r\n                        col = getCol();\r\n                        current.seatInfo(row,col);\r\n                    case \"F\":\r\n                        x=2;\r\n                    case \"G\":\r\n                        x=2;\r\n                        loop=true;\r\n                        break;\r\n                }\r\n            }\r\n        }\r\n    }\r\n\r\n    private static int getCol(){\r\n        Scanner input = new Scanner(System.in);\r\n        int col = 0;\r\n        int maxcol = current.getSize();\r\n        boolean colValid = false;\r\n        while (!colValid){\r\n            System.out.println(\"Enter a column number between 0 and \" + maxcol);\r\n            col = input.nextInt();\r\n            if (col > -1){\r\n                if (col < (maxcol+1)){\r\n                    colValid = true;\r\n                }\r\n            }\r\n        }\r\n        return col;\r\n    }\r\n    private static int getRow(){\r\n        Scanner input = new Scanner(System.in);\r\n        int row = 0;\r\n        int maxrow = 4;\r\n        boolean rowValid = false;\r\n        while (!rowValid){\r\n            System.out.println(\"Enter a column number between 0 and \" + maxrow);\r\n            row = input.nextInt();\r\n            if (row > -1){\r\n                if (row < (maxrow+1)){\r\n                    rowValid = true;\r\n                }\r\n            }\r\n        }\r\n        return row;\r\n    }\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/example/Main.java b/src/main/java/org/example/Main.java
+--- a/src/main/java/org/example/Main.java	(revision a3538351e703e9ca5818aa84ac4480c41ab515ef)
++++ b/src/main/java/org/example/Main.java	(date 1719436209408)
+@@ -9,108 +9,144 @@
+     static Module operate = new Module("OperatingSystems", 7);
+     static Module robots = new Module("Robotics", 6);
+     static Module current = serverWeb;
++    public static int menu = 1;
++
++    private static int getCol(){
++        Scanner input = new Scanner(System.in);
++        int col = 0;
++        int maxcol = current.getSize();
++        boolean colValid = false;
++        while (!colValid){
++            System.out.println("Enter a column number between 0 and " + (maxcol-1));
++            col = input.nextInt();
++            if (col > -1){
++                if (col < maxcol){
++                    colValid = true;
++                }
++            }
++        }
++        return col;
++    }
++    private static int getRow(){
++        Scanner input = new Scanner(System.in);
++        int row = 0;
++        int maxrow = 4;
++        boolean rowValid = false;
++        while (!rowValid){
++            System.out.println("Enter a row number between 0 and " + 3);
++            row = input.nextInt();
++            if (row > -1){
++                if (row < (maxrow)){
++                    rowValid = true;
++                }
++            }
++        }
++        return row;
++    }
+ 
+-    public static void main(String[] args) {
++
++    public static void menu1(){
+         Scanner input = new Scanner(System.in);
+-        boolean loop = false;
+-        while (!loop){
+-            System.out.println("Please select which class you want to enrol in: " +
+-                    "1 - Server side web development " +
+-                    "2 - Client side web development" +
+-                    "3 - Mobile App Development" +
+-                    "4 - Operating Systems" +
+-                    "5 - Robotic Principles" +
+-                    "0 - Quit Application");
+-            try {
+-                int menu = input.nextInt();
+-                switch (menu) {
+-                    case 1 -> current=serverWeb;
+-                    case 2 -> current=clientWeb;
+-                    case 3 -> current=mobile;
+-                    case 4 -> current=operate;
+-                    case 5 -> current=robots;
+-                    case 0 -> {
+-                        loop=true;
+-                        System.out.println("Thank you for using the Plane Management application");
+-                    }
+-                    default -> System.out.println("Please enter a valid menu option");
+-                }
+-            } catch (InputMismatchException e) {
+-                System.out.println("Enter an integer please");
+-                input.nextLine();
+-            }
+-            int x = 1;
+-            while (x==1){
+-                System.out.println("Would you like to: " +
+-                        "A - Book a place" +
+-                        "B - Cancel a place" +
+-                        "C - Find the first available place" +
+-                        "D - Find how many openings are left" +
+-                        "E - Find the info for a seat" +
+-                        "F - Return to the original menu" +
+-                        "G - Quit Application");
+-                String choice = input.next();
+-                int row = 0;
+-                int col = 0;
+-                switch (choice) {
+-                    case "A":
+-                        row = getRow();
+-                        col = getCol();
+-                        current.buySeat(row,col);
+-                    case "B":
+-                        row = getRow();
+-                        col = getCol();
+-                        current.cancelSeat(row,col);
+-                    case "C":
+-                        current.findFirstSeat();
+-                    case "D":
+-                        current.seatsLeft();
+-                    case "E":
+-                        row = getRow();
+-                        col = getCol();
+-                        current.seatInfo(row,col);
+-                    case "F":
+-                        x=2;
+-                    case "G":
+-                        x=2;
+-                        loop=true;
+-                        break;
+-                }
++        System.out.println("Please select which class you want to enrol in\n " +
++                "1 - Server side web development\n " +
++                "2 - Client side web development\n" +
++                "3 - Mobile App Development\n" +
++                "4 - Operating Systems\n" +
++                "5 - Robotic Principles\n" +
++                "0 - Quit Application\n");
++        try {
++            int choice = input.nextInt();
++            switch (choice) {
++                case 1 -> {
++                    current = serverWeb;
++                    menu = 2;
++                }
++                case 2 -> {
++                    current=clientWeb;
++                    menu = 2;
++                }
++                case 3 -> {
++                    current = mobile;
++                    menu = 2;
++                }
++                case 4 -> {
++                    current = operate;
++                    menu = 2;
++                }
++                case 5 -> {
++                    current = robots;
++                    menu = 2;
++                }
++                case 0 -> {
++                    menu=3;
++                    System.out.println("Thank you for using the Plane Management application");
++                }
++                default -> System.out.println("Please enter a valid menu option");
++            }
++        } catch (InputMismatchException e) {
++            System.out.println("Enter an integer please");
++            input.nextLine();
++        }
++    }
++    public static void menu2(){
++        current.getSeats();
++        System.out.println("\n");
++        Scanner input = new Scanner(System.in);
++        int x;
++        System.out.println("Would you like to: \n " +
++                "A - Book a place\n" +
++                "B - Cancel a place\n" +
++                "C - Find the first available place\n" +
++                "D - Find how many openings are left\n" +
++                "E - Find the info for a seat\n" +
++                "F - Return to the original menu\n" +
++                "G - Quit Application");
++        String choice = input.next();
++        int row = 0;
++        int col = 0;
++        switch (choice) {
++            case "A":
++                row = getRow();
++                col = getCol();
++                current.buySeat(row,col);
++                break;
++            case "B":
++                row = getRow();
++                col = getCol();
++                current.cancelSeat(row,col);
++                break;
++            case "C":
++                current.findFirstSeat();
++                break;
++            case "D":
++                current.seatsLeft();
++                break;
++            case "E":
++                row = getRow();
++                col = getCol();
++                current.seatInfo(row,col);
++                break;
++            case "F":
++                menu=1;
++                break;
++            case "G":
++                menu=3;
++                break;
++        }
++    }
++    public static void main(String[] args) {
++        boolean loop = true;
++        while (loop == true) {
++            if (menu == 1) {
++                menu1();
++            } else if (menu == 2) {
++                menu2();
++            } else {
++                loop = false;
+             }
+         }
+     }
+ 
+-    private static int getCol(){
+-        Scanner input = new Scanner(System.in);
+-        int col = 0;
+-        int maxcol = current.getSize();
+-        boolean colValid = false;
+-        while (!colValid){
+-            System.out.println("Enter a column number between 0 and " + maxcol);
+-            col = input.nextInt();
+-            if (col > -1){
+-                if (col < (maxcol+1)){
+-                    colValid = true;
+-                }
+-            }
+-        }
+-        return col;
+-    }
+-    private static int getRow(){
+-        Scanner input = new Scanner(System.in);
+-        int row = 0;
+-        int maxrow = 4;
+-        boolean rowValid = false;
+-        while (!rowValid){
+-            System.out.println("Enter a column number between 0 and " + maxrow);
+-            row = input.nextInt();
+-            if (row > -1){
+-                if (row < (maxrow+1)){
+-                    rowValid = true;
+-                }
+-            }
+-        }
+-        return row;
+-    }
++}
++
+ 
+-}
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"f1e528e5-9f03-4217-91bc-9ddacec3424c\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/.gitignore\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/encodings.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/misc.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/uiDesigner.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/vcs.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/pom.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/org/example/Main.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/org/example/Module.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/org/example/Person.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/org/example/Seat.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\"><![CDATA[{\r\n  \"associatedIndex\": 7\r\n}]]></component>\r\n  <component name=\"ProjectId\" id=\"2iQWi1CL2qQumiELOiATk60IhN2\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"Application.Main.executor\": \"Debug\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"git-widget-placeholder\": \"master\",\r\n    \"kotlin-language-version-configured\": \"true\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"onboarding.tips.debug.path\": \"C:/Users/m0rav/IdeaProjects/Enrol/src/main/java/org/example/Main.java\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"Main\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"org.example.Main\" />\r\n      <module name=\"Enrol\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"org.example.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.Main\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62\" />\r\n        <option value=\"bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"f1e528e5-9f03-4217-91bc-9ddacec3424c\" name=\"Changes\" comment=\"\" />\r\n      <created>1719423407715</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1719423407715</updated>\r\n      <workItem from=\"1719423409005\" duration=\"2207000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision a3538351e703e9ca5818aa84ac4480c41ab515ef)
++++ b/.idea/workspace.xml	(date 1719436880084)
+@@ -5,17 +5,11 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="f1e528e5-9f03-4217-91bc-9ddacec3424c" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Module.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Person.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Seat.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Module.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Module.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Person.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Seat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Seat.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -32,9 +26,21 @@
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+-  <component name="ProjectColorInfo"><![CDATA[{
+-  "associatedIndex": 7
++  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
++  "lastFilter": {
++    "state": "OPEN",
++    "assignee": "m0ravat"
++  }
++}]]></component>
++  <component name="GithubPullRequestsUISettings"><![CDATA[{
++  "selectedUrlAndAccountId": {
++    "url": "https://github.com/m0ravat/Enrol.git",
++    "accountId": "187c7d69-2b2e-43bf-b902-46bcec898113"
++  }
+ }]]></component>
++  <component name="ProjectColorInfo">{
++  &quot;associatedIndex&quot;: 7
++}</component>
+   <component name="ProjectId" id="2iQWi1CL2qQumiELOiATk60IhN2" />
+   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+   <component name="ProjectViewState">
+@@ -43,7 +49,7 @@
+   </component>
+   <component name="PropertiesComponent"><![CDATA[{
+   "keyToString": {
+-    "Application.Main.executor": "Debug",
++    "Application.Main.executor": "Run",
+     "RunOnceActivity.ShowReadmeOnStart": "true",
+     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+     "git-widget-placeholder": "master",
+@@ -94,10 +100,32 @@
+       <option name="presentableId" value="Default" />
+       <updated>1719423407715</updated>
+       <workItem from="1719423409005" duration="2207000" />
++      <workItem from="1719433841547" duration="3005000" />
+     </task>
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+     <option name="version" value="3" />
+   </component>
++  <component name="XDebuggerManager">
++    <breakpoint-manager>
++      <breakpoints>
++        <line-breakpoint enabled="true" type="java-line">
++          <url>file://$PROJECT_DIR$/src/main/java/org/example/Main.java</url>
++          <line>128</line>
++          <option name="timeStamp" value="17" />
++        </line-breakpoint>
++        <line-breakpoint enabled="true" type="java-line">
++          <url>file://$PROJECT_DIR$/src/main/java/org/example/Main.java</url>
++          <line>129</line>
++          <option name="timeStamp" value="18" />
++        </line-breakpoint>
++        <line-breakpoint enabled="true" type="java-line">
++          <url>file://$PROJECT_DIR$/src/main/java/org/example/Main.java</url>
++          <line>141</line>
++          <option name="timeStamp" value="32" />
++        </line-breakpoint>
++      </breakpoints>
++    </breakpoint-manager>
++  </component>
+ </project>
+\ No newline at end of file

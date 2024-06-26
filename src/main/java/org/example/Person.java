@@ -1,3 +1,5 @@
+package org.example;
+
 public class Person {
     private String firstname;
     private String surname;
@@ -26,6 +28,6 @@ public class Person {
         return this.email;
     }
     public void printPerson(){
-        System.out.println("Person name: " + this.firstname + " " + this.surname + " email: " + this.email);
+        System.out.println("org.example.Person name: " + this.firstname + " " + this.surname + " email: " + this.email);
     }
 }
