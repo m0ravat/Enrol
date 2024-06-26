@@ -35,7 +35,7 @@ public class Seat {
     }
     public void printTicket(){
         System.out.println("Row is: " + this.row);
-        System.out.println("org.example.Seat is: " + this.col);
+        System.out.println("Column is: " + this.col);
         System.out.println("Class is: " + this.classs);
         person.printPerson();
     }

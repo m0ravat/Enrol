@@ -28,6 +28,6 @@ public class Person {
         return this.email;
     }
     public void printPerson(){
-        System.out.println("org.example.Person name: " + this.firstname + " " + this.surname + " email: " + this.email);
+        System.out.println("Person name: " + this.firstname + " " + this.surname + "\n Email: " + this.email);
     }
 }
