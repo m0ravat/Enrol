@@ -93,6 +93,7 @@ public class Main {
         System.out.println("\n");
         Scanner input = new Scanner(System.in);
         int x;
+        System.out.println("Welcome to class " + current.getSubject());
         System.out.println("Would you like to: \n " +
                 "A - Book a place\n" +
                 "B - Cancel a place\n" +
